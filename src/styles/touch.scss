@@ -1,0 +1,336 @@
+:root {
+  --touch-btn-height: 96px;
+  --touch-btn-font-size: 26px;
+  --touch-btn-padding-x: 40px;
+  --touch-input-height: 64px;
+  --touch-input-font-size: 20px;
+  --touch-table-row-height: 56px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Microsoft YaHei', sans-serif;
+  background: #f5f7fa;
+  font-size: 18px;
+}
+
+.page {
+  padding: 20px;
+  max-width: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-home,
+.page-stock {
+  max-width: none;
+  width: 100%;
+}
+
+/* 触摸一体机：居中工作台 + 下方主操作（距底边留白） */
+.page-touch {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 48px 64px;
+  box-sizing: border-box;
+}
+
+.page-touch .page-header {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) auto minmax(140px, 1fr);
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.page-touch .page-header .page-back {
+  justify-self: start;
+}
+
+.page-touch .page-header .page-title {
+  justify-self: center;
+  text-align: center;
+  margin: 0;
+  font-size: clamp(28px, 3.2vmin, 36px);
+}
+
+.page-touch .page-header .page-title-block {
+  justify-self: center;
+  text-align: center;
+}
+
+.page-touch .page-header .page-title-block .page-title {
+  font-size: clamp(28px, 3.2vmin, 36px);
+}
+
+.page-touch .page-header .page-header-right {
+  justify-self: end;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.page-touch .page-body {
+  flex: 1;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 0 12px;
+}
+
+.page-touch.page-touch--wide .page-body,
+.page-touch.page-touch--wide .page-actions {
+  width: min(1480px, 100%);
+}
+
+.page-touch .page-body .el-form {
+  width: 100%;
+}
+
+/* 触摸表单：更宽标签、更大字号、更大行距，避免中文标签换行 */
+.page-touch .touch-form.el-form {
+  --el-form-label-font-size: 22px;
+}
+
+.page-touch .touch-form .el-form-item {
+  margin-bottom: 28px;
+}
+
+.page-touch .touch-form .el-form-item__label {
+  font-size: 22px !important;
+  font-weight: 700;
+  line-height: 64px;
+  height: auto;
+  white-space: nowrap;
+}
+
+.page-touch .touch-form .el-form-item__content {
+  font-size: 22px;
+}
+
+.page-touch .touch-form .el-input__wrapper,
+.page-touch .touch-form .el-select__wrapper {
+  min-height: 72px;
+  font-size: 22px;
+}
+
+.page-touch .touch-form .el-input__inner,
+.page-touch .touch-form .el-textarea__inner {
+  font-size: 22px;
+}
+
+.page-touch .touch-form .el-textarea__inner {
+  min-height: 96px;
+  line-height: 1.5;
+  padding: 14px 16px;
+}
+
+.page-touch .page-body > .el-input .el-input__wrapper,
+.page-touch .page-body > .el-input .el-input__inner {
+  min-height: 72px;
+  font-size: 22px;
+}
+
+.page-touch .page-actions {
+  flex-shrink: 0;
+  width: min(1280px, 100%);
+  margin: auto auto 0;
+  padding-top: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.page-touch .page-actions .el-button--large {
+  min-width: min(420px, 70vw);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.el-button {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 18px 28px;
+  border-radius: 10px;
+}
+
+.el-button--large {
+  min-height: var(--touch-btn-height);
+  font-size: var(--touch-btn-font-size);
+  padding: 0 var(--touch-btn-padding-x);
+}
+
+.el-button.is-link {
+  font-size: 20px;
+  padding: 14px 20px;
+  min-height: 52px;
+}
+
+.el-input__wrapper {
+  min-height: var(--touch-input-height);
+  font-size: var(--touch-input-font-size);
+}
+
+.el-input__inner {
+  font-size: var(--touch-input-font-size);
+}
+
+.el-form-item__label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.el-select__wrapper {
+  min-height: var(--touch-input-height);
+  font-size: var(--touch-input-font-size);
+}
+
+.el-table {
+  font-size: 18px;
+  width: 100%;
+}
+
+.el-table.table-fill .el-table__header-wrapper table,
+.el-table.table-fill .el-table__body-wrapper table {
+  width: 100% !important;
+  table-layout: fixed;
+}
+
+.el-table.admin-tool-table {
+  font-size: 16px;
+}
+
+.el-table.admin-tool-table th.el-table__cell {
+  font-size: 16px;
+}
+
+.el-table.admin-tool-table th.el-table__cell > .cell,
+.el-table.admin-tool-table td.el-table__cell > .cell {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.table-actions .el-button.is-link {
+  padding: 14px 10px;
+}
+
+.el-table__header-wrapper table,
+.el-table__body-wrapper table {
+  width: 100%;
+}
+
+.el-table th.el-table__cell {
+  font-size: 18px;
+}
+
+.el-table th.el-table__cell > .cell {
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.el-table td.el-table__cell {
+  vertical-align: top;
+  overflow: visible;
+}
+
+.el-table td.el-table__cell > .cell {
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  line-height: 1.45;
+}
+
+.el-table .el-table__row {
+  height: auto;
+}
+
+.el-table .el-table__body tr {
+  height: auto;
+}
+
+.el-pagination {
+  font-size: 18px;
+}
+
+.el-pagination button,
+.el-pagination .el-pager li {
+  min-width: 56px;
+  height: 56px;
+  line-height: 56px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.el-message-box {
+  width: min(92vw, 760px) !important;
+  padding: 28px 28px 20px !important;
+  border-radius: 12px;
+}
+
+.el-message-box__header {
+  padding-bottom: 12px;
+}
+
+.el-message-box__title {
+  font-size: 26px !important;
+  font-weight: 700 !important;
+}
+
+.el-message-box__content {
+  font-size: 20px;
+}
+
+.el-message-box__btns {
+  padding-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.el-message-box__btns .el-button {
+  min-height: 88px;
+  min-width: 200px;
+  font-size: 26px;
+  font-weight: 700;
+  padding: 0 40px;
+  border-radius: 10px;
+}
+
+.el-message-box__btns .el-button--primary {
+  min-width: 220px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}

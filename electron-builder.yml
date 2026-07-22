@@ -1,0 +1,21 @@
+appId: com.tooling.warehouse
+productName: 工装库管理系统
+directories:
+  output: release
+files:
+  - dist/**
+  - dist-electron/**
+  - package.json
+asar: true
+asarUnpack:
+  - "**/*.node"
+  - node_modules/better-sqlite3/**
+npmRebuild: true
+win:
+  target: nsis
+  signAndEditExecutable: false
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: true
+  shortcutName: 工装库管理系统
