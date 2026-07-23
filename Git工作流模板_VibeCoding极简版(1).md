@@ -241,6 +241,9 @@ git worktree add ../<项目名>-<功能名> -b feature/<功能名> main
 
 cd ../<项目名>-<功能名>
 ```
+切换路径，注意查看左侧资源管理器也要对应
+Set-Location D:\Desktop\tooling-warehouse-app-llm
+git branch --show-current
 
 在新目录开发并推送：
 
