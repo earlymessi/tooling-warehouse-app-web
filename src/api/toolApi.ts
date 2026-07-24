@@ -22,4 +22,6 @@ export const toolApi = {
   delete: async (id: number) => unwrap<boolean>(await getApi().tool.delete(id)),
   adminUpdate: async (id: number, data: AdminUpdateToolInput) =>
     unwrap<ToolAccount>(await getApi().tool.adminUpdate(id, data)),
+  nextCodes: async (count = 1, reserved: string[] = []) =>
+    unwrap<string[]>(await getApi().tool.nextCodes({ count, reserved })),
 }

@@ -32,4 +32,15 @@ export function registerToolIpc(ipcMain: IpcMain): void {
   ipcMain.handle('tool:adminUpdate', (_e, id: number, data: AdminUpdateToolInput) =>
     wrap(() => toolService.adminUpdateTool(getDb(), id, data)),
   )
+  ipcMain.handle(
+    'tool:nextCodes',
+    (_e, payload?: { count?: number; reserved?: string[] }) =>
+      wrap(() =>
+        toolService.getNextToolCodes(
+          getDb(),
+          payload?.count ?? 1,
+          payload?.reserved ?? [],
+        ),
+      ),
+  )
 }

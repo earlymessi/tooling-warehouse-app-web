@@ -177,7 +177,7 @@ describe('parseInboundSpreadsheet', () => {
 })
 
 describe('writeInboundImportTemplate', () => {
-  it('writes the six-column template used by self-service inbound', () => {
+  it('writes shaded tool-code column with 无需填写 placeholder', () => {
     const filePath = path.join(makeTempDir(), 'inbound-template.xlsx')
 
     expect(writeInboundImportTemplate(filePath)).toBe(filePath)
@@ -185,6 +185,9 @@ describe('writeInboundImportTemplate', () => {
     const workbook = XLSX.readFile(filePath)
     const sheet = workbook.Sheets[workbook.SheetNames[0]]
     const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, raw: false })
-    expect(rows[0]).toEqual(['资产编号', '名称', '型号', '序列号', '工作中心', '库位'])
+    expect(rows[0]?.[0]).toBe('资产编号')
+    expect(rows[0]?.slice(1)).toEqual(['名称', '型号', '序列号', '工作中心', '库位'])
+    expect(rows[1]?.[0]).toBe('无需填写')
+    expect(rows[1]?.[1]).toBe('示例夹具')
   })
 })

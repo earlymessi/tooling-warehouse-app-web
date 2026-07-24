@@ -45,7 +45,7 @@ export function registerImportExportIpc(ipcMain: IpcMain): void {
   ipcMain.handle('importExport:parseInboundSpreadsheet', async () => {
     const picked = await pickInboundSpreadsheet()
     if (!picked.ok) return picked
-    return wrap(() => excelService.parseInboundSpreadsheet(picked.filePath))
+    return wrap(() => excelService.parseInboundSpreadsheet(picked.filePath, getDb()))
   })
 
   ipcMain.handle('importExport:exportTools', (_e, params: ToolListParams) =>

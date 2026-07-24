@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { inboundApi } from '@/api/inboundApi'
 import { employeeApi } from '@/api/employeeApi'
+import { toolApi } from '@/api/toolApi'
 import { importExportApi, systemApi } from '@/api/systemApi'
 import type { InboundToolItem, BatchInboundError } from '@/types/inbound'
 import type { Employee } from '@/types/employee'
@@ -16,9 +17,9 @@ const operatorName = ref('')
 const employees = ref<Employee[]>([])
 const items = ref<InboundToolItem[]>([emptyItem()])
 
-function emptyItem(): InboundToolItem {
+function emptyItem(tool_code = ''): InboundToolItem {
   return {
-    tool_code: '',
+    tool_code,
     tool_name: '',
     specification: '',
     serial_no: '',
@@ -27,13 +28,33 @@ function emptyItem(): InboundToolItem {
   }
 }
 
-function addRow() {
-  items.value.push(emptyItem())
+function reservedCodes(extra: string[] = []): string[] {
+  return [...items.value.map((item) => item.tool_code), ...extra]
+    .map((code) => code.trim())
+    .filter(Boolean)
+}
+
+async function allocateCodes(count: number, reserved: string[] = []): Promise<string[]> {
+  return toolApi.nextCodes(count, reserved)
+}
+
+async function resetItems(count = 1) {
+  const codes = await allocateCodes(count)
+  items.value = codes.map((code) => emptyItem(code))
+}
+
+async function addRow() {
+  try {
+    const [code] = await allocateCodes(1, reservedCodes())
+    items.value.push(emptyItem(code))
+  } catch (e) {
+    ElMessage.error(e instanceof Error ? e.message : '生成资产编号失败')
+  }
 }
 
 function removeRow(index: number) {
   if (items.value.length <= 1) {
-    items.value[0] = emptyItem()
+    void resetItems(1)
     return
   }
   items.value.splice(index, 1)
@@ -161,8 +182,8 @@ async function submit() {
       })),
     })
     await showSuccessDialog(result)
-    items.value = [emptyItem()]
     operatorName.value = ''
+    await resetItems(1)
   } catch (e) {
     const err = e as Error & { code?: string; inboundErrors?: BatchInboundError[] }
     if (err.inboundErrors?.length) {
@@ -178,7 +199,9 @@ async function submit() {
   }
 }
 
-onMounted(loadEmployees)
+onMounted(async () => {
+  await Promise.all([loadEmployees(), resetItems(1)])
+})
 </script>
 
 <template>
@@ -229,9 +252,9 @@ onMounted(loadEmployees)
           <el-table-column label="#" width="56" align="center">
             <template #default="{ $index }">{{ $index + 1 }}</template>
           </el-table-column>
-          <el-table-column label="资产编号" min-width="120">
+          <el-table-column label="资产编号" min-width="140">
             <template #default="{ row }">
-              <el-input v-model="row.tool_code" size="large" placeholder="必填" />
+              <el-input v-model="row.tool_code" size="large" placeholder="自动生成" />
             </template>
           </el-table-column>
           <el-table-column label="名称" min-width="120">

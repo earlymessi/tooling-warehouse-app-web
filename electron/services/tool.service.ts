@@ -13,11 +13,20 @@ import { formatNow } from './time'
 import * as borrowRepo from '../db/borrow.repository'
 import { generateRecordNo } from './recordNo'
 import { insertAdminImportInbound } from './inbound.service'
+import { generateNextToolCodes } from './toolCode'
 
 function assertToolCode(code: string): void {
   if (!code.trim()) {
     throw new Error('TOOL_CODE_INVALID: 资产编号不能为空')
   }
+}
+
+export function getNextToolCodes(
+  db: Database.Database,
+  count = 1,
+  reserved: string[] = [],
+): string[] {
+  return generateNextToolCodes(db, Math.max(1, Math.min(count, 500)), reserved)
 }
 
 export function getToolByCode(db: Database.Database, toolCode: string): ToolAccount | null {

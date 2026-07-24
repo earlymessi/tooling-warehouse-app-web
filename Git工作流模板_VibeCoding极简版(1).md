@@ -13,6 +13,31 @@ git config --global user.email "<GitHub邮箱>"
 
 ---
 
+## 常用查看github指令：
+```bash
+# 1. 当前仓库连的是哪个远程（GitHub 地址）
+git remote -v
+
+# 2. 本地 Git 用户名 / 邮箱（提交用的身份）
+git config user.name
+git config user.email
+
+# 3. GitHub CLI 当前登录的是哪个账号（推荐）
+gh auth status
+
+# 4. 整体 Git 状态（分支、改动、是否领先/落后远程）
+git status -sb
+
+# 5. 本地分支及是否跟踪远程
+git branch -vv
+
+# 6. 最近提交
+git log --oneline -5
+
+# 可以将分支名字改成main
+git branch -m master main
+
+```
 
 # 一、创建并联动 GitHub 仓库
 
@@ -21,7 +46,7 @@ git config --global user.email "<GitHub邮箱>"
 第一次使用 GitHub CLI 时先登录：
 
 ```bash
-gh auth login
+gh a uth login
 ```
 
 进入项目并上传：

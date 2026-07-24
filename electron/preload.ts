@@ -15,6 +15,8 @@ const api = {
     delete: (id: number) => ipcRenderer.invoke('tool:adminDelete', id),
     adminUpdate: (id: number, data: AdminUpdateToolInput) =>
       ipcRenderer.invoke('tool:adminUpdate', id, data),
+    nextCodes: (payload?: { count?: number; reserved?: string[] }) =>
+      ipcRenderer.invoke('tool:nextCodes', payload),
   },
   borrow: {
     borrow: (data: BorrowToolInput) => ipcRenderer.invoke('borrow:borrow', data),
