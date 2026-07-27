@@ -2,6 +2,7 @@
 import { h, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import CodeFieldInput from '@/components/CodeFieldInput.vue'
 import { inboundApi } from '@/api/inboundApi'
 import { employeeApi } from '@/api/employeeApi'
 import { toolApi } from '@/api/toolApi'
@@ -254,7 +255,7 @@ onMounted(async () => {
           </el-table-column>
           <el-table-column label="资产编号" min-width="140">
             <template #default="{ row }">
-              <el-input v-model="row.tool_code" size="large" placeholder="自动生成" />
+              <CodeFieldInput v-model="row.tool_code" placeholder="自动生成" />
             </template>
           </el-table-column>
           <el-table-column label="名称" min-width="120">
@@ -269,17 +270,17 @@ onMounted(async () => {
           </el-table-column>
           <el-table-column label="序列号" min-width="110">
             <template #default="{ row }">
-              <el-input v-model="row.serial_no" size="large" placeholder="必填" />
+              <CodeFieldInput v-model="row.serial_no" placeholder="必填" />
             </template>
           </el-table-column>
           <el-table-column label="工作中心" min-width="100">
             <template #default="{ row }">
-              <el-input v-model="row.work_center" size="large" placeholder="例如 LG-FT" />
+              <CodeFieldInput v-model="row.work_center" placeholder="例如 LG-FT" />
             </template>
           </el-table-column>
           <el-table-column label="库位" min-width="110">
             <template #default="{ row }">
-              <el-input v-model="row.location_code" size="large" placeholder="手填或扫码" />
+              <CodeFieldInput v-model="row.location_code" placeholder="手填或扫码" />
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100" align="center">

@@ -1,10 +1,11 @@
-import type { IpcMain } from 'electron'
+import type { IpcMain, BrowserWindow } from 'electron'
 import { shell } from 'electron'
 import * as backupService from '../services/backup.service'
 import { getPathsInfo } from '../paths'
+import { enableEnglishCodeInput, restoreDefaultInput } from '../services/winIme'
 import { wrap, success, failure } from './response'
 
-export function registerBackupIpc(ipcMain: IpcMain): void {
+export function registerBackupIpc(ipcMain: IpcMain, getMainWindow: () => BrowserWindow | null): void {
   ipcMain.handle('system:backupDatabase', () => wrap(() => backupService.backupDatabase()))
   ipcMain.handle('system:getPaths', () => wrap(() => getPathsInfo()))
   ipcMain.handle('system:openPath', async (_e, filePath: string) => {
@@ -24,6 +25,14 @@ export function registerBackupIpc(ipcMain: IpcMain): void {
       const path = String(filePath ?? '').trim()
       if (!path) throw new Error('PATH_REQUIRED: 路径为空')
       shell.showItemInFolder(path)
+      return true
+    }),
+  )
+  ipcMain.handle('system:setCodeInputMode', (_e, english: boolean) =>
+    wrap(() => {
+      const win = getMainWindow()
+      if (english) enableEnglishCodeInput(win)
+      else restoreDefaultInput(win)
       return true
     }),
   )

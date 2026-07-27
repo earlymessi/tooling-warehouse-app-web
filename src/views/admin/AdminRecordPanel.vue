@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import CodeFieldInput from '@/components/CodeFieldInput.vue'
 import { borrowApi } from '@/api/borrowApi'
 import { importExportApi } from '@/api/systemApi'
 import type { BorrowReturnRecord, RecordStatus } from '@/types/borrow'
@@ -225,7 +226,7 @@ defineExpose({ load })
     >
       <el-form label-width="120px">
         <el-form-item label="资产编号" required>
-          <el-input v-model="form.tool_code" size="large" />
+          <CodeFieldInput v-model="form.tool_code" />
         </el-form-item>
         <el-form-item label="借用人" required>
           <el-input v-model="form.borrower" size="large" />

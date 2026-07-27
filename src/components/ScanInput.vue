@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
 import type { ElInput } from 'element-plus'
+import CodeFieldInput from '@/components/CodeFieldInput.vue'
+import { normalizeCodeField } from '@/utils/codeField'
 
 const props = defineProps<{
   placeholder?: string
@@ -12,7 +14,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-const inputRef = ref<InstanceType<typeof ElInput> | null>(null)
+const inputRef = ref<InstanceType<typeof CodeFieldInput> | null>(null)
 const inner = ref(props.modelValue ?? '')
 
 async function focusInput() {
@@ -22,8 +24,15 @@ async function focusInput() {
 
 onMounted(focusInput)
 
-function onEnter() {
-  const value = inner.value.trim()
+async function onEnter(e: KeyboardEvent) {
+  e.preventDefault()
+  await nextTick()
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, 0)
+  })
+  const elInput = inputRef.value?.inputRef as InstanceType<typeof ElInput> | null | undefined
+  const native = elInput?.input as HTMLInputElement | undefined
+  const value = normalizeCodeField((native?.value ?? inner.value).trim())
   if (!value) return
   emit('scan', value)
   emit('update:modelValue', '')
@@ -35,12 +44,11 @@ defineExpose({ focus: focusInput })
 </script>
 
 <template>
-  <el-input
+  <CodeFieldInput
     ref="inputRef"
     v-model="inner"
-    size="large"
-    :placeholder="placeholder ?? '请扫描工装二维码/条码'"
     clearable
-    @keyup.enter="onEnter"
+    :placeholder="placeholder ?? '请扫描工装二维码/条码'"
+    @keydown.enter="onEnter"
   />
 </template>

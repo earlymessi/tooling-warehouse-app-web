@@ -47,6 +47,7 @@ const api = {
     getPaths: () => ipcRenderer.invoke('system:getPaths'),
     openPath: (filePath: string) => ipcRenderer.invoke('system:openPath', filePath),
     showItemInFolder: (filePath: string) => ipcRenderer.invoke('system:showItemInFolder', filePath),
+    setCodeInputMode: (english: boolean) => ipcRenderer.invoke('system:setCodeInputMode', english),
   },
   admin: {
     login: (username: string, password: string) =>

@@ -2,6 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import CodeFieldInput from '@/components/CodeFieldInput.vue'
 import { toolApi } from '@/api/toolApi'
 import type { ToolStatus } from '@/types/tool'
 
@@ -140,7 +141,7 @@ onMounted(load)
         <el-divider content-position="left">基本信息</el-divider>
         <div class="form-grid">
           <el-form-item label="资产编号" required>
-            <el-input v-model="form.tool_code" size="large" :disabled="isEdit" />
+            <CodeFieldInput v-model="form.tool_code" :disabled="isEdit" />
           </el-form-item>
           <el-form-item label="名称" required>
             <el-input v-model="form.tool_name" size="large" />
@@ -149,13 +150,13 @@ onMounted(load)
             <el-input v-model="form.specification" size="large" />
           </el-form-item>
           <el-form-item label="序列号">
-            <el-input v-model="form.serial_no" size="large" />
+            <CodeFieldInput v-model="form.serial_no" />
           </el-form-item>
           <el-form-item label="工作中心" required>
-            <el-input v-model="form.work_center" size="large" placeholder="归属工作中心" />
+            <CodeFieldInput v-model="form.work_center" placeholder="归属工作中心" />
           </el-form-item>
           <el-form-item label="库位">
-            <el-input v-model="form.location_code" size="large" />
+            <CodeFieldInput v-model="form.location_code" />
           </el-form-item>
           <el-form-item label="二维码内容">
             <el-input v-model="form.qr_content" size="large" placeholder="默认同资产编号" />

@@ -36,7 +36,7 @@ app.whenReady().then(() => {
     initDatabase()
     ensureDefaultAdmin(getDb())
     ensureDefaultEmployees(getDb())
-    registerIpcHandlers(ipcMain)
+    registerIpcHandlers(ipcMain, () => mainWindow)
     createWindow()
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)

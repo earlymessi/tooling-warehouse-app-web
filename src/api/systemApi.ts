@@ -20,6 +20,8 @@ export const systemApi = {
   openPath: async (filePath: string) => unwrap<boolean>(await getApi().system.openPath(filePath)),
   showItemInFolder: async (filePath: string) =>
     unwrap<boolean>(await getApi().system.showItemInFolder(filePath)),
+  setCodeInputMode: async (english: boolean) =>
+    unwrap<boolean>(await getApi().system.setCodeInputMode(english)),
 }
 
 export const importExportApi = {

@@ -17,6 +17,7 @@
   "dependencies": {
     "better-sqlite3": "^11.8.1",
     "element-plus": "^2.9.7",
+    "koffi": "^3.1.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
     "xlsx": "^0.18.5",

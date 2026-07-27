@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import CodeFieldInput from '@/components/CodeFieldInput.vue'
 import { toolApi } from '@/api/toolApi'
 import type { ToolAccount, ToolStatus } from '@/types/tool'
 
@@ -32,6 +33,11 @@ async function load() {
   }
 }
 
+async function search() {
+  page.value = 1
+  await load()
+}
+
 onMounted(load)
 </script>
 
@@ -44,14 +50,15 @@ onMounted(load)
     </div>
 
     <div class="page-body">
-      <el-form inline class="touch-form">
+      <el-form inline class="touch-form" @submit.prevent="search">
         <el-form-item label="关键字">
-          <el-input
+          <CodeFieldInput
             v-model="keyword"
-            size="large"
+            :strict="false"
             placeholder="资产编号/名称/型号/序列号"
             clearable
             style="width: 320px"
+            @keydown.enter.prevent="search"
           />
         </el-form-item>
         <el-form-item label="状态">
@@ -61,7 +68,7 @@ onMounted(load)
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="large" @click="() => { page = 1; load() }">查询</el-button>
+          <el-button type="primary" size="large" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
 
