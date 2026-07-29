@@ -117,12 +117,12 @@ async function importSpreadsheet() {
   }
 }
 
-async function openCsv(csvPath: string) {
+async function openLabelFile(filePath: string) {
   try {
-    await systemApi.openPath(csvPath)
+    await systemApi.openPath(filePath)
   } catch (e) {
     try {
-      await systemApi.showItemInFolder(csvPath)
+      await systemApi.showItemInFolder(filePath)
     } catch {
       ElMessage.error(e instanceof Error ? e.message : '无法打开文件')
     }
@@ -138,7 +138,7 @@ async function showSuccessDialog(result: {
     h('div', { class: 'inbound-success-body' }, [
       h('p', { class: 'inbound-success-title' }, `入库成功 ${result.count} 件`),
       h('p', { class: 'inbound-success-line' }, `入库单号：${result.inbound_no}`),
-      h('p', { class: 'inbound-success-line' }, '标签 CSV 已保存到桌面：'),
+      h('p', { class: 'inbound-success-line' }, '标签表格已保存到桌面：'),
       h(
         'a',
         {
@@ -146,12 +146,12 @@ async function showSuccessDialog(result: {
           href: '#',
           onClick: (e: MouseEvent) => {
             e.preventDefault()
-            void openCsv(result.csvPath)
+            void openLabelFile(result.csvPath)
           },
         },
         result.csvPath,
       ),
-      h('p', { class: 'inbound-success-hint' }, '点击上方路径可打开文件'),
+      h('p', { class: 'inbound-success-hint' }, '点击上方路径可打开 Excel 文件'),
     ]),
     '',
     {

@@ -1,6 +1,6 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { app } from 'electron'
+import * as XLSX from 'xlsx'
 import type Database from 'better-sqlite3'
 import type {
   BatchInboundError,
@@ -56,22 +56,30 @@ function validateItems(db: Database.Database, items: InboundToolItem[]): BatchIn
   return errors
 }
 
-function writeLabelCsv(items: InboundToolItem[], inboundNo: string): string {
+/** 导出打印标签表：列保持原样，格式改为 xlsx */
+function writeLabelXlsx(items: InboundToolItem[], inboundNo: string): string {
   const desktop = app.getPath('desktop')
   const stamp = formatNow().replace(/[:T]/g, '-').slice(0, 19)
-  const filePath = path.join(desktop, `工装标签-${inboundNo}-${stamp}.csv`)
-  const header = '资产编号,名称,型号,序列号,工作中心'
-  const lines = items.map((item) =>
-    [item.tool_code, item.tool_name, item.specification, item.serial_no, item.work_center]
-      .map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`)
-      .join(','),
-  )
-  // Excel 友好：加 BOM
-  fs.writeFileSync(filePath, `\uFEFF${header}\n${lines.join('\n')}\n`, 'utf8')
+  const filePath = path.join(desktop, `工装标签-${inboundNo}-${stamp}.xlsx`)
+  const rows = [
+    ['资产编号', '名称', '型号', '序列号', '工作中心'],
+    ...items.map((item) => [
+      item.tool_code,
+      item.tool_name,
+      item.specification ?? '',
+      item.serial_no,
+      item.work_center,
+    ]),
+  ]
+  const ws = XLSX.utils.aoa_to_sheet(rows)
+  ws['!cols'] = [{ wch: 14 }, { wch: 16 }, { wch: 12 }, { wch: 14 }, { wch: 12 }]
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, '工装标签')
+  XLSX.writeFile(wb, filePath)
   return filePath
 }
 
-/** 自助入库：整批校验，失败全部不写入并返回原因；成功则事务写入台账+入库记录，并导出标签 CSV 到桌面 */
+/** 自助入库：整批校验，失败全部不写入并返回原因；成功则事务写入台账+入库记录，并导出标签 xlsx 到桌面 */
 export function batchInbound(db: Database.Database, input: BatchInboundInput): BatchInboundResult {
   const operator = input.operator_name?.trim() ?? ''
   if (!operator) throw new Error('OPERATOR_REQUIRED: 入库人不能为空')
@@ -133,7 +141,7 @@ export function batchInbound(db: Database.Database, input: BatchInboundInput): B
     throw new Error(`BATCH_INBOUND_FAILED: 入库失败，已全部回滚。${msg}`)
   }
 
-  const csvPath = writeLabelCsv(normalized, inbound_no)
+  const csvPath = writeLabelXlsx(normalized, inbound_no)
   return { inbound_no, count: normalized.length, csvPath, items: normalized }
 }
 
